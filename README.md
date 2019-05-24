@@ -1,5 +1,5 @@
 ## Installation
-this is test
+this is test 1
 ##### Thêm Vào package.json
 ```
 "my-rn-setting": "git+https://gitlab.com/react-native-my-libs/my-rn-setting.git",
