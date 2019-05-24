@@ -20,7 +20,7 @@ export type SettingItemObj = {
         switchState: () => Promise<boolean>
         switchOnValueChange: (value: boolean) => void
     }
-    onPress?: VoidFunction
+    onPress?: (SettingItem) => void
     rowAccountSetting?: {
         callbackDongBoSuccess: VoidFunction,
         IAP_LICENSE_KEY: string

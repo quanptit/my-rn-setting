@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {StyleSheet, StyleProp, ViewStyle, Switch} from "react-native";
-import {Col, DialogUtils, RenderUtils, StyleUtils, TextCustom, Touchable, HTMLView} from "my-rn-base-component";
+import {Col, DialogUtils, RenderUtils, StyleUtils, TextCustom, Touchable, HTMLView, ComponentUpdateOnlyState} from "my-rn-base-component";
 import {DialogSelectValue} from "./DialogSelectValue";
 
 const s = StyleUtils.getAllStyle();
@@ -17,7 +17,7 @@ interface SettingItemProps {
     hasSwitch?: boolean
     switchState?: () => Promise<boolean>
     switchOnValueChange?: (value: boolean) => void
-    onPress?: () => void
+    onPress?: (settingItem: SettingItem) => void
     hasNavArrow?: boolean
     title?: string
     des?: string
@@ -26,10 +26,11 @@ interface SettingItemProps {
     style?: StyleProp<ViewStyle>
 }
 
-export class SettingItem extends Component<SettingItemProps, { selectedItem: any, switchState: boolean }> {
+export class SettingItem extends ComponentUpdateOnlyState<SettingItemProps, { selectedItem: any, switchState: boolean, customDes?: string }> {
 
     constructor(props) {
         super(props);
+        this.onPress = this.onPress.bind(this);
         let selectedItem;
         if (this.props.listItemSetting) {
             selectedItem = this.props.listItemSetting.selectedItem;
@@ -38,6 +39,10 @@ export class SettingItem extends Component<SettingItemProps, { selectedItem: any
         }
 
         this.state = {switchState: false, selectedItem: selectedItem};
+    }
+
+    setCustomDes(des: string) {
+        this.setState({customDes: des});
     }
 
     async componentDidMount() {
@@ -54,7 +59,7 @@ export class SettingItem extends Component<SettingItemProps, { selectedItem: any
 
     onPress() {
         if (this.props.onPress) {
-            this.props.onPress();
+            this.props.onPress(this);
             return
         }
         if (this.props.listItemSetting) {
@@ -78,14 +83,14 @@ export class SettingItem extends Component<SettingItemProps, { selectedItem: any
         if (this.state.selectedItem)
             str = this.props.listItemSetting.getDescription(this.state.selectedItem);
         else
-            str = this.props.des;
+            str = this.state.customDes || this.props.des;
         if (str)
             return (<HTMLView style={{marginTop: 3}} value={str}/>)
     }
 
     render() {
         return (
-            <Touchable style={[styles.container, this.props.style]} onPress={this.onPress.bind(this)}>
+            <Touchable style={[styles.container, this.props.style]} onPress={this.onPress}>
                 {this.props.icon}
                 <Col flex={1}>
                     <TextCustom value={this.props.title} style={[s.f_lar, s.black]}/>
