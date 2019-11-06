@@ -1,6 +1,6 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
-import {ButtonModel, DialogUtils, RenderUtils, StyleUtils, TextCustom, Toast, Button} from "my-rn-base-component";
+import {Button, ButtonModel, DialogUtils, RenderUtils, StyleUtils, TextCustom, Toast} from "my-rn-base-component";
 import {getStringsCommon} from "my-rn-common-resource";
 import {DialogLogin, UserUtils} from "my-rn-login";
 import {CommonUtils} from "my-rn-base-utils";
@@ -71,6 +71,7 @@ export class RowSettingAccount extends PureComponent<Props> {
 
     private _renderButtonLogin() {
         return <Button key="2"
+                       model={ButtonModel.primary}
                        title={getStringsCommon().Click_dang_nhap_dong_bo.toUpperCase()}
                        onPress={this.btnLoginClick.bind(this)}
                        textStyle={s.f_smal} style={styles.button}/>;
